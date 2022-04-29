@@ -1,0 +1,541 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', 'sans-serif';
+}
+
+body {
+  background: skyblue;
+}
+
+.main_wrapper {
+  width: 100%;
+  height: auto;
+  margin: auto;
+  height: 100%;
+}
+
+.header_wrapper {
+  /* width:1000px; */
+  width: 100%;
+  height: 150px;
+  /* margin:auto; */
+}
+
+#logo {
+  float: left;
+  height: 100px;
+  width: 20%
+}
+
+#banner {
+  float: right;
+  height: 100px;
+  width: 80%;
+  text-align: center;
+  font-size: xx-large;
+  font-weight: bold;
+  padding: 20px;
+}
+
+#banner h1 {
+  font-family: 'Beau Rivage', 'cursive';
+}
+
+.menubar {
+  /* width:1000px; */
+  width: 100%;
+  height: 50px;
+  background: gray;
+  color: white;
+  clear: both;
+  position: sticky;
+  top: 0;
+}
+
+#menu {
+  padding: 0;
+  margin: 0;
+  line-height: 40px;
+  float: left;
+  padding-left: 3%;
+  font-weight: bold;
+}
+
+#menu li {
+  list-style: none;
+  display: inline;
+}
+
+#menu li a {
+  text-decoration: none;
+  color: white;
+  padding: 8px;
+  margin: 5px;
+  font-size: 18px;
+  font-family: 'Comic', 'sans-serif', 'Roboto';
+}
+
+#menu li a:hover {
+  color: yellow;
+  font-weight: bolder;
+  text-decoration: underline;
+}
+
+#form {
+  float: right;
+  padding-right: 8px;
+  line-height: 40px;
+}
+
+.content_wrapper {
+  /* width:1000px; */
+  width: 100%;
+  max-height: fit-content;
+  margin: auto;
+  background-color: azure;
+  margin-top: 0;
+}
+
+/* #content_area #alert_box{
+  background-color:pink;
+  color:green;
+  height:30px;
+  margin-top:10px;
+  text-align:center;
+  font-size: large;
+  font-weight:bold;
+  visibility:hidden;
+} */
+
+/* SIDEBAR STYLES START */
+
+#sidebar {
+  /* width:200px; */
+  width: 20%;
+  /* background-color:blanchedalmond; */
+  float: left;
+  padding: 5% 10px 0 10px;
+}
+
+#sidebar_title {
+  background-color: white;
+  color: black;
+  font-size: 22px;
+  font-family: arial;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+#cats {
+  text-align: center;
+}
+
+#cats li {
+  list-style: none;
+  margin: 5px;
+}
+
+#cats li a {
+  /* color: white; */
+  color: black;
+  padding: 8px;
+  margin: 5px;
+  text-align: center;
+  font-size: 18px;
+  text-decoration: none;
+  font-family: 'Comic', 'sans-serif', 'Roboto';
+}
+
+#cats li a:hover {
+  /* color:orange; */
+  color: red;
+  font-weight: bolder;
+  text-decoration: underline;
+}
+
+/* SIDEBAR STYLES END */
+
+/* CONTENT AREA STYLES START */
+
+#content_area {
+  /* width:800px; */
+  width: 80%;
+  min-height: 800px;
+  float: right;
+  background-color: rgb(210, 148, 33);
+  border: 1px solid black;
+}
+
+/* CONTENT AREA STYLES END */
+
+#shopping_cart {
+  width: 100%;
+  height: 50px;
+  background-color: rgb(39, 32, 32);
+  color: white;
+  padding: 15px;
+  text-align: center;
+  padding: 10px;
+  float: center; font-size: 18px; padding: 5px; line-height: 40px;
+}
+
+#shopping-cart-span
+{ 
+    padding:5px;
+    max-width:fit-content;
+    width:100%;
+    margin:auto;
+    height:100%;
+}
+
+#products_box {
+  text-align: center;
+  margin:10px 20px 0 20px;
+  display:flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  padding:10px;
+  background-color:darkkhaki;
+}
+
+#single_product {
+  padding: 10px;
+  margin: 10px 20px 10px 20px;
+  width: 250px;
+  height:350px;
+  max-height: fit-content;
+  /* float: left;
+  margin-left: 20px;
+  padding: 10px; */
+  background-color:beige ;
+}
+
+#single_product img {
+  border: 1px solid black;
+  width:180px;
+  height:180px;
+}
+
+#single_product #details {
+  float:left;
+}
+
+#single_product #price {
+  float:right;
+}
+
+/* LOGIN FORM CSS START */
+.login_form_container {
+  width: 400px;
+  height: 400px;
+  margin: 30px auto 50px;
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 3% 25px 3% 25px;
+  /* background-image:linear-gradient(to bottom,rgb(249, 244, 244),whitesmoke,darkgray,gray); */
+  background-color: blanchedalmond;
+}
+
+.login_form_container form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.login_form_header {
+  height: fit-content;
+  font-weight: bold;
+  font-family: 'Roboto', 'sans-serif';
+  text-align: center;
+  color: black;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.input_control {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input_control label {
+  font-family: 'Roboto', 'sans-serif';
+  width: 100%;
+  text-align: left;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.input_control input {
+  border-radius: 5px;
+  margin-bottom: 15px;
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  font-size: medium;
+}
+
+
+.input_control input:hover {
+  border-color: green;
+}
+
+.login_button_container {
+  margin-bottom: 10px;
+  display: inline-flex;
+  height: 50px;
+}
+
+.login_button_container button {
+  color: black;
+  width: 40%;
+  height: inherit;
+  margin: auto;
+  transition: ease-in-out 0.5s;
+  cursor: pointer;
+  border-radius: 10px;
+  font-weight: bold;
+  font-family: 'Roboto', 'sans-serif';
+  font-size: large;
+  background-color: gray;
+}
+
+.login_button:hover {
+  background-color: rgb(54, 54, 116);
+  border: 1px black;
+  color: white;
+}
+
+.login_form_container h3 {
+  text-align: center;
+}
+
+.login_form_container h3 a {
+  text-decoration: none;
+  color: blue;
+}
+
+/* LOGIN FORM CSS END */
+
+
+/* REGISTER FORM CSS START */
+.register_form_container {
+  width: 820px;
+  height: 700px;
+  max-height: fit-content;
+  margin: 30px auto 30px;
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 2% 20px 2% 20px;
+  /* background-image:linear-gradient(to bottom,rgb(249, 244, 244),whitesmoke,darkgray,gray); */
+  background-color: whitesmoke;
+}
+
+.register_form_container form {
+  height: 100%;
+  border-radius: 10px;
+}
+
+.register_form_header {
+  height: fit-content;
+  font-weight: bold;
+  font-family: 'Roboto', 'sans-serif';
+  text-align: center;
+  color: black;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.register_form_input_control_box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  padding: 10px;
+  /* important */
+}
+
+.register_input_control {
+  width: 360px;
+  margin: 0 8px 15px 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.register_input_control label {
+  font-family: 'Roboto', 'sans-serif';
+  width: 100%;
+  text-align: left;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.register_input_control input {
+  border-radius: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  font-size: medium;
+}
+
+
+.register_input_control input:hover {
+  border-color: green;
+}
+
+.register_button_container {
+  margin-bottom: 10px;
+  display: inline-flex;
+  height: 50px;
+  width: 100%;
+}
+
+.register_button_container button {
+  color: black;
+  width: 40%;
+  height: inherit;
+  margin: auto;
+  transition: ease-in-out 0.5s;
+  cursor: pointer;
+  border-radius: 10px;
+  font-weight: bold;
+  font-family: 'Roboto', 'sans-serif';
+  font-size: large;
+  background-color: gray;
+}
+
+.register_button:hover {
+  background-color: rgb(54, 54, 116);
+  border: 1px black;
+  color: white;
+}
+
+.register_form_container h3 {
+  text-align: center;
+}
+
+.register_form_container h3 a {
+  text-decoration: none;
+  color: blue;
+}
+
+/* REGISTER FORM CSS END */
+
+/* UPDATE PASSWORD CSS START */
+
+.update_password_form_container {
+  width: 400px;
+  height: 500px;
+  margin: 30px auto 50px;
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 3% 25px 3% 25px;
+  /* background-image:linear-gradient(to bottom,rgb(249, 244, 244),whitesmoke,darkgray,gray); */
+  background-color: blanchedalmond;
+}
+
+.update_password_form_container form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.update_password_form_header {
+  height: fit-content;
+  font-weight: bold;
+  font-family: 'Roboto', 'sans-serif';
+  text-align: center;
+  color: black;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.update_input_control {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.update_input_control label {
+  font-family: 'Roboto', 'sans-serif';
+  width: 100%;
+  text-align: left;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.update_input_control input {
+  border-radius: 5px;
+  margin-bottom: 15px;
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  font-size: medium;
+}
+
+
+.update_input_control input:hover {
+  border-color: green;
+}
+
+.update_password_button_container {
+  margin-bottom: 10px;
+  display: inline-flex;
+  height: 50px;
+}
+
+.update_password_button_container button {
+  color: black;
+  width: 40%;
+  height: inherit;
+  margin: auto;
+  transition: ease-in-out 0.5s;
+  cursor: pointer;
+  border-radius: 10px;
+  font-weight: bold;
+  font-family: 'Roboto', 'sans-serif';
+  font-size: large;
+  background-color: lightgray;
+}
+
+.update_password_button:hover {
+  background-color: rgb(54, 54, 116);
+  border: 1px black;
+  color: white;
+}
+
+/* .update_password_form_container h3 {
+  text-align: center;
+}
+
+._form_container h3 a {
+  text-decoration: none;
+  color: blue;
+} */
+
+/* UPDATE PASSWORD CSS END */
+
+
+/* FOOTER CSS START */
+#footer {
+  /* width:1000px; */
+  width: 100%;
+  height: 140px;
+  background-color: rgb(40, 36, 36);
+  clear: both;
+  position:relative;
+  bottom:0;
+  left: 0;
+  /* visibility: visible; */
+  color: white;
+}
+
+#footer h4 {
+  text-align: center;
+  padding-top: 70px;
+}
+/* FOOTER CSS END */
