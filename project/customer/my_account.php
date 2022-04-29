@@ -41,8 +41,8 @@ include "functions/functions.php";
                 <ul id="menu">
                     <li><a href="../index.php">Home</a></li>
                     <li><a href="../all_products.php">All Products</a></li>
-                    <li><a href="../customer/my_account.php">My Account</a></li>
-                    <li><a href="../customer_register.php">Sign Up</a></li>
+                    <li><a href="my_account.php">My Account</a></li>
+                    <li><a href="#">Sign Up</a></li>
                     <li><a href="../cart.php">Shopping Cart</a></li>
                     <li><a href="#">Contact Us</a></li>
                 </ul>
@@ -78,6 +78,7 @@ include "functions/functions.php";
                     <li><a href="my_account.php?edit_account">Update Account</a></li>
                     <li><a href="my_account.php?update_password">Update Password</a></li>
                     <li><a href="my_account.php?delete_account">Delete Account</a></li>
+                    <li><a href="logout.php">Logout</a></li>
 
                 </ul>
 
@@ -155,6 +156,11 @@ include "functions/functions.php";
                             if(isset($_GET['update_password'])){
 
                                 include ("update_password.php");
+                            }
+
+                            if(isset($_GET['delete_account'])){
+
+                                include ("delete_account.php");
                             }
                         ?>
 

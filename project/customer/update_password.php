@@ -28,7 +28,11 @@
  </div>
 
  <?php
+
+    include "includes/db.php";
     if (isset($_POST['update_password'])) {
+
+        $customer_email = $_SESSION['customer_email'];
 
         $current_pwd = $_POST['current_password'];
         $new_pwd = $_POST['new_password'];
@@ -47,18 +51,38 @@
             echo "
                 <script>alert('All input fields must be filled')</script>
                 ";
+                exit;
         } else if ($row_count == 0) {
             echo "
                 <script>alert('Wrong current password')</script>
                 ";
+                exit;
         } else if ($new_pwd != $new_pwd_repeat) {
             echo "
                 <script>alert('Passwords do not match')</script>
                 ";
-        }else{
+                exit;
+        } else {
             
+            $update_pwd = "UPDATE customers SET customer_pass = ? WHERE customer_email = ? ";
+
+            $stmt = mysqli_prepare($con, $update_pwd);
+
+            mysqli_stmt_bind_param($stmt, 'ss', $new_pwd, $customer_email);
+
+            mysqli_stmt_execute($stmt);
+
+            $execval = mysqli_stmt_execute($stmt);
+
+            if( $execval){
+
+            echo "
+            <script>alert('Your password has been updated successfully')</script>
+            <script>window.open('my_account.php','_self')</script>
+            ";
+            }
+
+
         }
-
-
     }
     ?>

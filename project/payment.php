@@ -7,9 +7,9 @@
       <title>Payment</title>
   </head>
   <body>
-      <div>
+      <div class="payment_container" style="margin:10px auto;">
           <h1>Pay with Paypal</h1>
-           <p style="text-align:center"><img src="images/Best Bargain5.png" width="200" height="150" ></p>
+           <p style="text-align:center"><img src="images/paypal.jpeg" width="300" height="150" ></p>
       </div>
   </body>
   </html>
