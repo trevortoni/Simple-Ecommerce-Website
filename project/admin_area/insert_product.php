@@ -19,10 +19,11 @@ include "includes/db.php";
         }
 
         table {
-            margin: 50px auto;
+            margin: 10px auto;
             width: 750px;
-            background-color:peru;
+            background-color:honeydew;
             border: 2px solid black;
+            border-radius: 10px;
         }
 
        
@@ -32,11 +33,11 @@ include "includes/db.php";
 <body>
     <form action="insert_product.php" method="post" enctype="multipart/form-data">
 
-        <table>
+        <table style="height:500px;">
 
             <tr>
                 <td style="text-align:center" colspan="8">
-                    <h1>INSERT PRODUCTS</h1>
+                    <h1>INSERT PRODUCT</h1>
                 </td>
             </tr>
 

@@ -177,7 +177,7 @@ include "includes/db.php";
                                         <td ><?php echo $product_title; ?><br>
                                             <img src="admin_area/product_images/<?php echo $product_image; ?>" width="60px" height="60px" />
                                         </td>
-                                        <td><input style="text-align:center;" type="number" min="1" id="qty_input"  name="qty" value="<?php echo $_SESSION["qty"]; ?>" /></td>
+                                        <td><input style="text-align:center;" type="number" min="1" id="qty_input" name="qty" value="<?php echo $_SESSION["qty"]; ?>" /></td>
 
                                         <!-- <script>
                                             var qtyInput = document.getElementById("qty_input");
@@ -196,6 +196,8 @@ include "includes/db.php";
 
                                         if (isset($_POST['update_cart'])) {
 
+                                            $ip = getIp();
+
                                             if (isset($_SESSION['customer_email']) && $_SESSION['qty'] == 0) {
 
                                                 $_SESSION['qty'] = 1;
@@ -206,7 +208,9 @@ include "includes/db.php";
 
                                             $qty = $_POST['qty'];
 
-                                            $update_qty = "UPDATE cart SET qty = $qty ";
+                                            // $update_qty = "UPDATE cart SET qty = $qty WHERE ip_add= '$ip' AND ";
+
+                                            $update_qty = "UPDATE cart SET qty = $qty WHERE ip_add = $ip AND p_id = $pro_id";
 
                                             $run_qty = mysqli_query($con,$update_qty);
  
@@ -224,7 +228,7 @@ include "includes/db.php";
 
                                             $_SESSION['qty'] = $qty;
 
-                                            $total = $total * $qty;
+                                            (int)$total =  (int)$total *  (int)$qty;
                                             (int)$total=(int)$total* (int)$qty;
 
                                             // (int)$single_price=(int)$single_price* (int)$qty;
@@ -232,7 +236,10 @@ include "includes/db.php";
                                             
                                         }
 
+
+
                                         ?>
+
 
                                         <td><?php echo "Ksh " . $single_price; ?></td>
                                     </tr>

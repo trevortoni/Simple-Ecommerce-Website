@@ -200,7 +200,9 @@ else
 
                     echo " 
                 <div id='single_product' > 
-                    <h3>$pro_title</h3>
+                    <div id='single_product_title'>
+                    <h5>$pro_title</h5>
+                    </div>
                     <img src='admin_area/product_images/$pro_image'/'>
                     <p style='color:black;'><b> Price: Ksh $pro_price</b></p>
                     <a id='details' href='details.php?pro_id=$pro_id' >Details</a>
@@ -244,7 +246,9 @@ else
 
                 echo " 
                     <div id='single_product' > 
-                      <h3>$pro_title</h3>
+                      <div id='single_product_title'>
+                      <h5>$pro_title</h5>
+                      </div>
                       <img src='admin_area/product_images/$pro_image'/>
                       <p><b>Price: Ksh $pro_price</b></p>
                       <a id='details' href='details.php?pro_id=$pro_id'>Details</a>
@@ -288,7 +292,9 @@ else
 
                 echo " 
                     <div id='single_product' > 
-                      <h3>$pro_title</h3>
+                      <div id='single_product_title'>
+                      <h5>$pro_title</h5>
+                      </div>
                       <img src='admin_area/product_images/$pro_image'/>
                       <p><b>Price: Ksh $pro_price</b></p>
                       <a id='details' href='details.php?pro_id=$pro_id'>Details</a>

@@ -1,0 +1,154 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', 'sans-serif';
+  }
+  
+  body {
+    background: skyblue;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .main_wrapper {
+    width: 100%;
+    height: auto;
+    margin: auto;
+  }
+
+  .header{
+      width:100%;
+      height:150px;
+      display:flex;
+      justify-content: center;
+  }
+
+  .header img{
+      width:100%;
+      height:150px;
+      border-bottom: 5px solid orange;
+  }
+
+  .content{
+      width:80%;
+      min-height:600px;
+      float:right;
+      background-color: khaki;
+      padding:10px;
+      
+  }
+
+  .sidebar{
+    width:20%;
+    height:600px;
+    float:left;
+    text-align: center;
+    border: 5px solid black;
+    background-color:dodgerblue;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  .sidebar a{
+      color:white;
+      text-decoration: none;
+      font-size:large;
+  }
+
+  .sidebar a:hover{
+      color:orangered;
+      text-decoration: underline;
+      font-weight: bold;
+  }
+
+  .products_table_header{
+    background-color:black;
+    text-align:center;
+    color:white;
+  }
+ 
+.view_products_container{
+  width: 90%;
+  margin: auto;
+  padding:10px;
+  background-color:white;
+}
+
+.view_products_container table{
+  width:100%;
+  margin:auto;
+  padding:20px;
+}
+
+/* .view_products_container table tr{
+  height:40px;
+} */
+
+/* .view_products_container table tr:nth-child(odd){
+  background-color: cyan;
+}
+
+.view_products_container table tr:nth-child(even){
+  background-color: gainsboro;
+} */
+
+.view_products_container table tr th,td{
+  text-align: center;
+  padding: 5px;
+}
+
+.view_products_container table tr td img{
+  height: 60px;
+  width: 60px;
+}
+
+/* add_category.php start */
+
+.add_category_form_container{
+  background-color:honeydew;
+  margin:30px auto;
+  width:70%;
+  height:100px;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.add_category_form_container form{
+  width: 100%;
+  height:100%;
+}
+
+.add_category_form_header{
+  height:40%;
+  text-align: center;
+}
+
+.add_category_form .input_control{
+  height:50px;
+  padding:10px 50px 10px 50px;
+}
+
+.add_category_form .input_control label{
+  font-weight: bold;
+  font-size: large;
+}
+
+.add_category_form .input_control input{
+  height: 30px;
+  padding:5px;
+  border-radius: 10px;
+}
+
+.add_category_form .input_control button{
+  margin-left: 40px;
+  height: 30px;
+  border-radius: 10px;
+  font-weight:bold;
+  font-size: large;
+  padding:5px;
+}
+
+
+/* add_category.php end*/

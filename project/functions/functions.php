@@ -1,5 +1,6 @@
 <?php
-error_reporting(E_ALL); ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 $host = "localhost";
 $user = "root";
 $password = "";
@@ -12,9 +13,7 @@ $con = mysqli_connect($host, $user, $password, $db);
 if (mysqli_connect_errno()) {
     echo "Database connection failure: " . mysqli_connect_error();
     exit();
-} 
-else
- {
+} else {
 
     //get the user Ip
     function getIp()
@@ -48,8 +47,8 @@ else
             $run_check = mysqli_query($con, $check_pro);
 
             if (mysqli_num_rows($run_check) > 0) {
- 
-                echo"<script>alert('Product already in Cart')</script>";
+
+                echo "<script>alert('Product already in Cart')</script>";
                 // echo'
                 // <div class="alert_box" style="visibility:visible;">
                 //    <h3>Product already added to cart!</h3>
@@ -107,7 +106,7 @@ else
         $total_price = 0;
 
         $ip = getIp();
-         //returns all the rows in cart table associated with the specific IP
+        //returns all the rows in cart table associated with the specific IP
         $sel_price = "SELECT * FROM cart WHERE ip_add = '$ip' ";
 
         $run_price = mysqli_query($con, $sel_price);
@@ -115,25 +114,24 @@ else
         while ($p_price = mysqli_fetch_array($run_price)) {
 
             $pro_id = $p_price['p_id'];
-             //using the returned product ids we pick prices from the products table
+            //using the returned product ids we pick prices from the products table
             $pro_price = "SELECT product_price FROM products WHERE product_id = '$pro_id' ";
 
             $run_pro_price =  mysqli_query($con, $pro_price);
-             //for all rows we get we put them in an array (taking the products_price)
-            while($p_price = mysqli_fetch_array( $run_pro_price)){
+            //for all rows we get we put them in an array (taking the products_price)
+            while ($p_price = mysqli_fetch_array($run_pro_price)) {
                 //the prices will be returned as an array
-                $product_price = array ($p_price['product_price'] );
+                $product_price = array($p_price['product_price']);
                 //add the prices in the array
                 $pro_prices_total = array_sum($product_price);
                 //display the total
                 $total_price = $total_price +  $pro_prices_total;
-
-
             }
-            
         }
 
-        echo "Ksh $total_price";
+        $total_price_formatted = number_format($total_price);
+
+        echo "Ksh $total_price_formatted";
     }
 
 
@@ -185,9 +183,10 @@ else
                 global $con;
 
                 // get 6 latest products
-                // $get_pro = "SELECT * FROM products ORDER BY RAND LIMIT 0,6";
+                $get_pro = "SELECT * FROM products ORDER BY RAND() LIMIT 6";
 
-                $get_pro = "SELECT * FROM products";
+                // $get_pro = "SELECT * FROM products";
+
                 $run_pro = mysqli_query($con, $get_pro);
 
                 while ($row_pro = mysqli_fetch_array($run_pro)) {
@@ -199,17 +198,19 @@ else
                     $pro_price = $row_pro['product_price'];
                     $pro_image = $row_pro['product_image'];
 
-                    echo " 
-                <div id='single_product' > 
-                    <div style='height:50px;width:100%;backgrond-color:yellow !important;'>
+                    $pro_price_formatted = number_format($pro_price);
+
+                echo " 
+                 <div id='single_product' > 
+                    <div id='single_product_title'>
                     <h5>$pro_title</h5>
                     </div>
                     <img src='admin_area/product_images/$pro_image'/'>
-                    <p style='color:black;'><b> Price: Ksh $pro_price</b></p>
+                    <p style='color:black;'><b> Price: Ksh $pro_price_formatted</b></p>
                     <a id='details' href='details.php?pro_id=$pro_id' >Details</a>
                     <a id='price' href='index.php?add_cart=$pro_id'><button >Add to Cart</button></a> 
-                </div>
-               ";
+                 </div>
+                 ";
                 } //end of while loop
             }
         }
@@ -223,9 +224,6 @@ else
             $cat_id = $_GET['cat'];
 
             global $con;
-
-            // get 6 latest products
-            // $get_pro = "SELECT * FROM products ORDER BY RAND LIMIT 0,6";
 
             $get_cat_pro = "SELECT * FROM products WHERE product_cat = $cat_id";
             $run_cat_pro = mysqli_query($con, $get_cat_pro);
@@ -245,24 +243,17 @@ else
                 $pro_price = $row_cat_pro['product_price'];
                 $pro_image = $row_cat_pro['product_image'];
 
-                echo " 
-                <!--
-                    <div id='single_product' > 
-                      <h3>$pro_title</h3>
-                      <img src='admin_area/product_images/$pro_image'/>
-                      <p><b>Price: Ksh $pro_price</b></p>
-                      <a id='details' href='details.php?pro_id=$pro_id'>Details</a>
-                      <a id='price'href= 'index.php?add_cart=$pro_id' ><button>Add to Cart</button></a> 
-                    </div>  -->
+                $pro_price_formatted = number_format($pro_price);
 
+                echo " 
                     <div id='single_product' > 
-                    <div style='height:50px;width:100%;'>
-                    <h5>$pro_title</h5>
-                    </div>
-                    <img src='admin_area/product_images/$pro_image'/'>
-                    <p style='color:black;'><b> Price: Ksh $pro_price</b></p>
-                    <a id='details' href='details.php?pro_id=$pro_id' >Details</a>
-                    <a id='price' href='index.php?add_cart=$pro_id'><button >Add to Cart</button></a> 
+                        <div id='single_product_title'>
+                        <h5>$pro_title</h5>
+                        </div>
+                        <img src='admin_area/product_images/$pro_image'/'>
+                        <p style='color:black;'><b> Price: Ksh $pro_price_formatted</b></p>
+                        <a id='details' href='details.php?pro_id=$pro_id' >Details</a>
+                        <a id='price' href='index.php?add_cart=$pro_id'><button >Add to Cart</button></a> 
                     </div>
                      ";
             } //end of while loop
@@ -279,16 +270,13 @@ else
 
             global $con;
 
-            // get 6 latest products
-            // $get_pro = "SELECT * FROM products ORDER BY RAND LIMIT 0,6";
-
             $get_brand_pro = "SELECT * FROM products WHERE product_brand = $brand_id";
             $run_brand_pro = mysqli_query($con, $get_brand_pro);
 
             $count_cats = mysqli_num_rows($run_brand_pro);
 
             if ($count_cats == 0) {
-                
+
                 echo "<h2 style='padding:20px;'>No products available for this Brand</h2>";
             }
 
@@ -301,24 +289,17 @@ else
                 $pro_price = $row_brand_pro['product_price'];
                 $pro_image = $row_brand_pro['product_image'];
 
+                $pro_price_formatted = number_format($pro_price);
+
                 echo " 
-                <!--
                     <div id='single_product' > 
-                      <h3>$pro_title</h3>
-                      <img src='admin_area/product_images/$pro_image'/>
-                      <p><b>Price: Ksh $pro_price</b></p>
-                      <a id='details' href='details.php?pro_id=$pro_id'>Details</a>
-                      <a id='price' href='index.php?add_cart=$pro_id'><button>Add to Cart</button></a> 
-                    </div>
-                    -->
-                    <div id='single_product' > 
-                    <div style='height:50px;width:100%;'>
-                    <h5>$pro_title</h5>
-                    </div>
-                    <img src='admin_area/product_images/$pro_image'/'>
-                    <p style='color:black;'><b> Price: Ksh $pro_price</b></p>
-                    <a id='details' href='details.php?pro_id=$pro_id' >Details</a>
-                    <a id='price' href='index.php?add_cart=$pro_id'><button >Add to Cart</button></a> 
+                        <div id='single_product_title'>s
+                        <h5>$pro_title</h5>
+                        </div>
+                        <img src='admin_area/product_images/$pro_image'/'>
+                        <p style='color:black;'><b> Price: Ksh $pro_price_formatted</b></p>
+                        <a id='details' href='details.php?pro_id=$pro_id' >Details</a>
+                        <a id='price' href='index.php?add_cart=$pro_id'><button >Add to Cart</button></a> 
                     </div>
                      ";
             } //end of while loop
@@ -326,5 +307,3 @@ else
         }
     }
 }//End of else statement
-
-?>

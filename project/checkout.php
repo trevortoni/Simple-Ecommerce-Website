@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL); ini_set('display_errors', 1);
 session_start(); 
 include "functions/functions.php";
 ?>
@@ -87,10 +88,10 @@ include "functions/functions.php";
                   
                    <?php
                       if(!isset($_SESSION['customer_email'])){
-                          include ("customer_login.php");
+                          include "customer_login.php";
                       }
                       else{
-                          include("payment.php");
+                          include "payment.php";
                       }
                    ?>
 

@@ -197,7 +197,8 @@ include "includes/db.php";
                             <button class="register_button" type="submit" name="register" value="Register">Signup</button>
                         </div>
 
-                        <h3><a href="customer_login.php">Already registered? Login Here</a></h3>
+                        <!-- <h3><a href="customer_login.php">Already registered? Login Here</a></h3> -->
+                        <h3><a href="checkout.php">Already registered? Login Here</a></h3>
 
                         <div id="alert_box"> </div>
 

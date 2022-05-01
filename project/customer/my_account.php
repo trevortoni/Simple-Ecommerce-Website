@@ -65,6 +65,11 @@ include "functions/functions.php";
 
         <div class="content_wrapper">
 
+            <?php 
+                if(isset($_SESSION['customer_email']))
+                {
+            ?>
+
             <div id="sidebar">
                 <div id="sidebar_title">My Account</div>
 
@@ -170,6 +175,8 @@ include "functions/functions.php";
             </div>
 
         </div>
+
+            <?php  } ?>
 
         <div id="footer">
             <h4>&copy; Trevor Toni 2022 Best Bargain.com</h4>

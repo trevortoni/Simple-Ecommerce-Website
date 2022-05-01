@@ -213,6 +213,21 @@ body {
   background-color:beige ;
 }
 
+#single_product:hover{
+  border: 1px solid red;
+}
+
+#single_product_title{
+  margin-bottom:10px;
+  padding:5px;
+  height:60px;
+  width: 100%;
+}
+
+#single_product_title h5{
+  text-transform: uppercase;
+}
+
 #single_product img {
   border: 1px solid black;
   width:180px;
@@ -519,6 +534,58 @@ body {
 
 /* UPDATE PASSWORD CSS END */
 
+/* DELETE ACCOUNT FORM CSS START */
+.delete_account_form_container{
+  width: 600px;
+  height:300px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.delete_account_form_container form{
+  width: 100%;
+  height:100%;
+  padding: 10px;
+  display:flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+} 
+
+.delete_account_form_header{
+  width: 100%;
+  height:40%;
+  padding: 20px;
+} 
+
+.delete_buttons_container{
+  width: 100%;
+  height:80px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.delete_button_container{
+  width: 50%;
+  margin:0 10px 0 10px;
+}
+
+.delete_button_container button{
+  margin: 10px auto;
+  width: 80%;
+  height: 40px;
+  border-radius: 10px;
+  background-color: lightgrey;
+  font-weight: bold;
+  font-size:larger;
+}
+
+.delete_button_container button:hover{
+  background-color:mediumblue;
+  color:white;
+}
+
+/* DELETE ACCOUNT FORM CSS END */
 
 /* FOOTER CSS START */
 #footer {
@@ -530,7 +597,6 @@ body {
   position:relative;
   bottom:0;
   left: 0;
-  /* visibility: visible; */
   color: white;
 }
 

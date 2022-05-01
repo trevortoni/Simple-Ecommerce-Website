@@ -36,7 +36,7 @@ include "functions/functions.php";
                     <li><a href="index.php">Home</a></li>
                     <li><a href="all_products.php">All Products</a></li>
                     <li><a href="customer/my_account.php">My Account</a></li>
-                    <li><a href="cutomer_register.php">Sign Up</a></li>
+                    <li><a href="customer_register.php">Sign Up</a></li>
                     <li><a href="cart.php">Shopping Cart</a></li>
                     <li><a href="#">Contact Us</a></li>
                 </ul>
@@ -95,13 +95,17 @@ include "functions/functions.php";
                         $pro_price = $row_pro['product_price'];
                         $pro_image = $row_pro['product_image'];
 
+                        $pro_price_formatted = number_format($pro_price);
+
                         echo " 
                       <div id='single_product' > 
-                        <h3>$pro_title</h3>
+                        <div id='single_product_title'>
+                          <h5>$pro_title</h5>
+                        </div>
                         <img src='admin_area/product_images/$pro_image'/>
-                        <p><b>Price: Ksh $pro_price</b></p>
-                        <a href='details.php?pro_id=$pro_id'>Details</a>
-                        <a href='index.php'><button>Add to Cart</button></a> 
+                        <p><b>Price: Ksh $pro_price_formatted</b></p>
+                        <a id='details' href='details.php?pro_id=$pro_id'>Details</a>
+                        <a id='price' href='index.php'><button>Add to Cart</button></a> 
                       </div>
                        ";
                     } //end of while loop
