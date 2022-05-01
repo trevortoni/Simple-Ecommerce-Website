@@ -1,5 +1,6 @@
 <?php
-error_reporting(E_ALL); ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include "functions/functions.php";
 include "includes/db.php";
 ?>
@@ -88,10 +89,10 @@ include "includes/db.php";
 
                 <!-- Register form -->
                 <div class="register_form_container">
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" >
+                    <form action="" method="post">
 
                         <div class="register_form_header">
-                            <h1>Register</h1>
+                            <h1>Customer Registration</h1>
                         </div>
 
                         <div class="register_form_input_control_box">
@@ -99,7 +100,6 @@ include "includes/db.php";
                             <div class="register_input_control">
                                 <label for="customer_fname">First Name</label>
                                 <input type="text" name="customer_fname" placeholder="Enter your first name" required>
-                                <!-- <span id="error" style="background-color:cadetblue;height:20px"></span> -->
                             </div>
 
                             <div class="register_input_control">
@@ -115,6 +115,11 @@ include "includes/db.php";
                             <div class="register_input_control">
                                 <label for="customer_pass">Password</label>
                                 <input type="password" name="customer_pass" placeholder="Enter password" required>
+                            </div>
+
+                            <div class="register_input_control">
+                                <label for="customer_pass_repeat">Confirm Password</label>
+                                <input type="password" name="customer_pass_repeat" placeholder="Confirm password" required>
                             </div>
 
                             <div class="register_input_control">
@@ -186,11 +191,6 @@ include "includes/db.php";
                                 <input type="text" name="customer_address" placeholder="Enter your address" required>
                             </div>
 
-                            <!-- <div class="register_input_control">
-                                <label for="customer_image">Profile Image(optional)</label>
-                                <input type="file" name="customer_image" accept=".png,.jpeg,.jpg" required>
-                            </div> -->
-
                         </div>
 
                         <div class="register_button_container">
@@ -200,7 +200,7 @@ include "includes/db.php";
                         <!-- <h3><a href="customer_login.php">Already registered? Login Here</a></h3> -->
                         <h3><a href="checkout.php">Already registered? Login Here</a></h3>
 
-                        <div id="alert_box"> </div>
+                        <!-- <div id="alert_box"> </div> -->
 
                     </form>
                 </div>
@@ -222,19 +222,21 @@ include "includes/db.php";
 
 <?php
 
-if (isset($_POST['register'])) {
+if (isset($_POST['register']))
+{
 
     $ip = getIp();
 
     //text data
-    $customer_fname = htmlspecialchars($_POST['customer_fname']);
-    $customer_lname = htmlspecialchars($_POST['customer_lname']);
-    $customer_email = htmlspecialchars($_POST['customer_email']);
-    $customer_pass =  htmlspecialchars($_POST['customer_pass']);
+    $customer_fname =  $_POST['customer_fname'];
+    $customer_lname =  $_POST['customer_lname'];
+    $customer_email =  $_POST['customer_email'];
+    $customer_pass =   $_POST['customer_pass'];
+    $customer_pass_repeat =  $_POST['customer_pass_repeat'];
     $customer_county = $_POST['customer_county'];
-    $customer_city = htmlspecialchars($_POST['customer_city']);
-    $customer_contact = htmlspecialchars($_POST['customer_contact']);
-    $customer_address = htmlspecialchars($_POST['customer_address']);
+    $customer_city =   $_POST['customer_city'];
+    $customer_contact = $_POST['customer_contact'];
+    $customer_address =  $_POST['customer_address'];
 
     //image data
     // $customer_image = $_FILES['customer_image']['name'];
@@ -244,63 +246,135 @@ if (isset($_POST['register'])) {
 
     //Form validation section
 
-        if( $customer_fname == "" ){
-            echo "
-                <div class='register_input_control'>
-                    <span id='error' style=' background-color:cadetblue;height:20px;color:red; '>Firstname is required!</span>
-                </div>
-               ";
+    $name_regex = "/^[a-zA-Z ]+$/";
+    $email_regex = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9]+(\.[a-z]{2,4})$/";
+	$contact_regex = "/^[0-9]+$/";
+
+    if (empty($customer_fname)||empty($customer_lname)||empty($customer_email)||empty($customer_pass)||empty($customer_pass_repeat)||empty($customer_county)||empty($customer_city)||empty($customer_contact)||empty($customer_address) ) 
+    {
+        echo "<script>alert('All fields are required')</script>";
+        exit();
+    } 
+
+    else
+    {
+
+        if(!preg_match($name_regex,$customer_fname))
+        {
+            echo "<script>alert('$customer_fname is not a valid name')</script>";
+            exit();
         }
 
-    $insert_customer = "INSERT INTO customers (customer_ip,customer_fname,customer_lname,customer_email,customer_pass,customer_county,customer_city,customer_contact,customer_address)
-    VALUES (?,?,?,?,?,?,?,?,?)";
+        if(!preg_match($name_regex,$customer_lname))
+        {
+            echo "<script>alert('$customer_lname is not a valid name')</script>";
+            exit();
+        }
 
-    $stmt = mysqli_prepare($con,$insert_customer);
+        if(!preg_match($email_regex,$customer_email))
+        {
+            echo "<script>alert('$customer_email is not a valid email')</script>";
+            exit();
+        }
 
-    mysqli_stmt_bind_param($stmt,'sssssssss',$ip, $customer_fname,$customer_lname ,$customer_email, $customer_pass, $customer_county, $customer_city, $customer_contact, $customer_address);
+        if(strlen($customer_pass) < 6 )
+        {
+            echo "<script>alert('Password should be at least 6 characters long!')</script>";
+            exit();
+        }
 
-    mysqli_stmt_execute($stmt);
+        if(strlen($customer_pass_repeat) < 6 )
+        {
+            echo "<script>alert('Password should be at least 6 characters long!')</script>";
+            exit();
+        }
 
-    $execval = mysqli_stmt_execute($stmt);
+        if($customer_pass != $customer_pass_repeat)
+        {
+            echo "<script>alert('Passwords do not match!')</script>";
+            exit();
+        }
 
-    if($execval){
+        if(!preg_match($contact_regex,$customer_contact))
+        {
+            echo "<script>alert('Mobile number is not valid!')</script>";
+            exit();
+        }
 
-        echo"<script>alert('Registration successful')</script>";
-        echo"<script>window.open('customer_register.php','_self')</script>";
+        if(!(strlen($customer_contact) == 10)){
+           
+            echo "<script>alert('Mobile number must be 10 characters long!')</script>";
+            exit();
+        }
+
+        //existing email address in our database
+        $check_email = "SELECT * FROM customers WHERE customer_email = ? "; 
+        $stmt = mysqli_prepare($con,$check_email);
+        mysqli_stmt_bind_param($stmt,'s',$customer_email);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+        $email_check_count = mysqli_stmt_num_rows($stmt);
+
+        if($email_check_count > 0)
+        {
+            echo "<script>alert('Email is already taken.Try another email address!')</script>";
+            exit();
+        }
+
+        else
+        {
+
+            $insert_customer = "INSERT INTO customers (customer_ip,customer_fname,customer_lname,customer_email,customer_pass,customer_county,customer_city,customer_contact,customer_address)
+            VALUES (?,?,?,?,?,?,?,?,?)";
+
+            $stmt = mysqli_prepare($con, $insert_customer);
+
+            mysqli_stmt_bind_param($stmt, 'sssssssss', $ip, $customer_fname, $customer_lname, $customer_email, $customer_pass, $customer_county, $customer_city, $customer_contact, $customer_address);
+
+            mysqli_stmt_execute($stmt);
+
+            // $execval = mysqli_stmt_execute($stmt);
+
+            // if ($execval)
+            // {
+            //     echo "<script>alert('Registration successful')</script>";
+            //     echo "<script>window.open('customer_register.php','_self')</script>";
+            //     header("Refresh:0");
+            // } 
+            // else
+            // {
+
+            //     echo "<script>alert('Registration not successful')</script>";
+            //     echo "<script>window.open('customer_register.php','_self')</script>";
+            // }
+
+
+            $select_cart = "SELECT * FROM cart WHERE ip_add ='$ip'";
+            $run_cart = mysqli_query($con, $select_cart);
+            $check_cart = mysqli_num_rows($run_cart);
+
+            if ($check_cart == 0)
+            {
+
+                $_SESSION['customer_email'] = $customer_email;
+                echo "<script>alert('Account has been created successfully!')</script>";
+                // echo "<script>window.open('customer/my_account.php', '_self'  )</script>";
+                echo "<script>window.open('index.php', '_self'  )</script>";
+            } 
+            else
+            {
+
+                $_SESSION['customer_email'] = $customer_email;
+                echo "<script>alert('Account has been created successfully!')</script>";
+                echo "<script>window.open('checkout.php', '_self')</script>";
+             }
+
+
+            mysqli_close($con);
+            exit();
+
+        }
     }
-
-    else{
-
-        echo"<script>alert('Registration not successful')</script>";
-        echo"<script>window.open('customer_register.php','_self')</script>";
-    }
-
-
-    $select_cart ="SELECT * FROM cart WHERE ip_add ='$ip'";
-
-    $run_cart = mysqli_query($con,$select_cart);
-
-    $check_cart = mysqli_num_rows($run_cart);
-
-    if($check_cart == 0){
-
-        $_SESSION['customer_email'] = $customer_email; 
-
-        echo "<script>alert('Account has been created successfully!')</script>";
-        echo "<script>window.open('customer/my_account.php', '_self'  )</script>";
-    }
-
-    else{ 
-
-        $_SESSION['customer_email'] = $customer_email; 
-
-        echo "<script>alert('Account has been created successfully!')</script>";
-        echo "<script>window.open('checkout.php', '_self')</script>";
-    }
-
-
-    mysqli_close($con);
-
 }
 
 ?>

@@ -84,6 +84,14 @@
                     include "delete_brand.php";
                 }
 
+                if(isset($_GET['view_customers'])){
+                    include "fetch_customers.php";
+                }
+
+                if(isset($_GET['delete_customer'])){
+                    include "delete_customer.php";
+                }
+
             ?>
         </div>
 
