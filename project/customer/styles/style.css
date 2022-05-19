@@ -89,6 +89,11 @@ body {
   line-height: 40px;
 }
 
+#form .search_input_box{
+  width:400px;
+}
+
+
 .content_wrapper {
   /* width:1000px; */
   width: 100%;

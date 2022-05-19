@@ -42,31 +42,60 @@ if (mysqli_connect_errno()) {
 
             $pro_id = $_GET['add_cart'];
 
+            if (isset($_POST['pro_qty'])) {
+
+                $pro_qty = $_POST['pro_qty'];
+
+                // echo  $pro_qty;
+            }
+
+            // $pro_qty = (int) $product_qty;
+
             $check_pro = "SELECT * FROM cart WHERE ip_add = '$ip' AND p_id = '$pro_id' ";
 
             $run_check = mysqli_query($con, $check_pro);
 
-            if (mysqli_num_rows($run_check) > 0) {
+            // if (mysqli_num_rows($run_check) > 0) {
 
-                echo "<script>alert('Product already in Cart')</script>";
-                // echo'
-                // <div class="alert_box" style="visibility:visible;">
-                //    <h3>Product already added to cart!</h3>
-                // </div>
-                // ';
+            //     echo "<script>alert('Product already added to cart')</script>";
+            //     echo "<script>window.open('details.php?pro_id=$pro_id','_self')</script>";
 
-            } else {
+            // } else{
 
-                // $insert_pro = "INSERT INTO cart (p_id,ip_add) VALUES ($pro_id,'$ip')";
+            //     // $insert_pro = "INSERT INTO cart (p_id,ip_add) VALUES ($pro_id,'$ip')";
 
-                $insert_pro = "INSERT INTO cart (p_id,ip_add,qty) VALUES ('$pro_id','$ip',0)";
+            //     $insert_pro = "INSERT INTO cart (p_id,ip_add,qty) VALUES ('$pro_id','$ip','$pro_qty')";
+
+            //     $run_pro = mysqli_query($con, $insert_pro);
+
+            //     echo "<script>window.open('details.php?pro_id=$pro_id','_self')</script>";                 
+            // }
+
+            if (mysqli_num_rows($run_check) == 0) {
+
+                $insert_pro = "INSERT INTO cart (p_id,ip_add,qty) VALUES ('$pro_id','$ip','$pro_qty')";
 
                 $run_pro = mysqli_query($con, $insert_pro);
 
-                echo "<script>window.open('index.php','_self')</script>";
+                echo "<script>alert('Product has been added to cart')</script>";
+
+                echo "<script>window.open('details.php?pro_id=$pro_id','_self')</script>";
+            } else if (mysqli_num_rows($run_check) > 0) {
+
+                $update_pro = "UPDATE cart SET qty = '$pro_qty' WHERE p_id = '$pro_id' AND ip_add = '$ip'";
+
+                $run_pro = mysqli_query($con, $update_pro);
+
+                echo "<script>alert('Product quantityhas been updated')</script>";
+
+                echo "<script>window.open('details.php?pro_id=$pro_id','_self')</script>";
             }
         }
     }
+
+
+    //addding to cart functionality
+
 
 
     //get the total items added to shopping cart
@@ -106,33 +135,85 @@ if (mysqli_connect_errno()) {
         $total_price = 0;
 
         $ip = getIp();
-        //returns all the rows in cart table associated with the specific IP
-        $sel_price = "SELECT * FROM cart WHERE ip_add = '$ip' ";
 
-        $run_price = mysqli_query($con, $sel_price);
+        $sel_cart = "SELECT * FROM cart WHERE ip_add = '$ip' ";
+
+        $run_cart = mysqli_query($con, $sel_cart);
         //for all rows we get we put them in an array (taking the p_id)
-        while ($p_price = mysqli_fetch_array($run_price)) {
+        while ($cart_row = mysqli_fetch_array($run_cart)) {
 
-            $pro_id = $p_price['p_id'];
+            $pro_id = $cart_row['p_id'];
+
+            $pro_qty = $cart_row['qty'];
+
             //using the returned product ids we pick prices from the products table
             $pro_price = "SELECT product_price FROM products WHERE product_id = '$pro_id' ";
 
             $run_pro_price =  mysqli_query($con, $pro_price);
-            //for all rows we get we put them in an array (taking the products_price)
-            while ($p_price = mysqli_fetch_array($run_pro_price)) {
-                //the prices will be returned as an array
-                $product_price = array($p_price['product_price']);
+
+            while ($pro_row = mysqli_fetch_array($run_pro_price)) {
                 //add the prices in the array
-                $pro_prices_total = array_sum($product_price);
-                //display the total
-                $total_price = $total_price +  $pro_prices_total;
+
+                $single_price = $pro_row['product_price'];
+
+                $sub_total =  $single_price * $pro_qty;
+
+                $total_price =  $total_price + $sub_total;
             }
         }
 
         $total_price_formatted = number_format($total_price);
 
-        echo "Ksh $total_price_formatted";
+        echo "Ksh.$total_price_formatted";
     }
+
+
+    //get the total price of cart items
+    function totalPricetax()
+    {
+        global $con;
+
+        $total_price = 0;
+
+        $ip = getIp();
+
+        $sel_cart = "SELECT * FROM cart WHERE ip_add = '$ip' ";
+
+        $run_cart = mysqli_query($con, $sel_cart);
+        //for all rows we get we put them in an array (taking the p_id)
+        while ($cart_row = mysqli_fetch_array($run_cart)) {
+
+            $pro_id = $cart_row['p_id'];
+
+            $pro_qty = $cart_row['qty'];
+
+            //using the returned product ids we pick prices from the products table
+            $pro_price = "SELECT product_price FROM products WHERE product_id = '$pro_id' ";
+
+            $run_pro_price =  mysqli_query($con, $pro_price);
+
+            while ($pro_row = mysqli_fetch_array($run_pro_price)) {
+                //add the prices in the array
+
+                $single_price = $pro_row['product_price'];
+
+                $sub_total =  $single_price * $pro_qty;
+
+                $total_price =  $total_price + $sub_total;
+            }
+        }
+
+        $vat = 0.13; 
+
+        $tax= $total_price * $vat;
+
+        $tax_rounded = round($tax,0);
+
+        $total_price_taxed = ($total_price + $tax_rounded);
+
+        echo $total_price_taxed;
+    }
+
 
 
 
@@ -200,7 +281,7 @@ if (mysqli_connect_errno()) {
 
                     $pro_price_formatted = number_format($pro_price);
 
-                echo " 
+                    echo " 
                  <div id='single_product' > 
                     <div id='single_product_title'>
                     <h5>$pro_title</h5>
@@ -208,7 +289,7 @@ if (mysqli_connect_errno()) {
                     <img src='admin_area/product_images/$pro_image'/'>
                     <p style='color:black;'><b> Price: Ksh $pro_price_formatted</b></p>
                     <a id='details' href='details.php?pro_id=$pro_id' >Details</a>
-                    <a id='price' href='index.php?add_cart=$pro_id'><button >Add to Cart</button></a> 
+                  <!--  <a id='price' href='index.php?add_cart=$pro_id'><button >Add to Cart</button></a> -->
                  </div>
                  ";
                 } //end of while loop
@@ -247,14 +328,14 @@ if (mysqli_connect_errno()) {
 
                 echo " 
                     <div id='single_product' > 
-                        <div id='single_product_title'>
-                        <h5>$pro_title</h5>
-                        </div>
-                        <img src='admin_area/product_images/$pro_image'/'>
-                        <p style='color:black;'><b> Price: Ksh $pro_price_formatted</b></p>
-                        <a id='details' href='details.php?pro_id=$pro_id' >Details</a>
-                        <a id='price' href='index.php?add_cart=$pro_id'><button >Add to Cart</button></a> 
+                    <div id='single_product_title'>
+                    <h5>$pro_title</h5>
                     </div>
+                    <img src='admin_area/product_images/$pro_image'/'>
+                    <p style='color:black;'><b> Price: Ksh $pro_price_formatted</b></p>
+                    <a id='details' href='details.php?pro_id=$pro_id' >Details</a>
+                    <!--  <a id='price' href='index.php?add_cart=$pro_id'><button >Add to Cart</button></a> -->
+                   </div>
                      ";
             } //end of while loop
 
@@ -293,14 +374,14 @@ if (mysqli_connect_errno()) {
 
                 echo " 
                     <div id='single_product' > 
-                        <div id='single_product_title'>s
+                        <div id='single_product_title'>
                         <h5>$pro_title</h5>
                         </div>
                         <img src='admin_area/product_images/$pro_image'/'>
                         <p style='color:black;'><b> Price: Ksh $pro_price_formatted</b></p>
                         <a id='details' href='details.php?pro_id=$pro_id' >Details</a>
-                        <a id='price' href='index.php?add_cart=$pro_id'><button >Add to Cart</button></a> 
-                    </div>
+                        <!--  <a id='price' href='index.php?add_cart=$pro_id'><button >Add to Cart</button></a> -->
+                   </div>
                      ";
             } //end of while loop
 

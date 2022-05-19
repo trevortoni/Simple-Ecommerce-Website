@@ -40,18 +40,33 @@ include "functions/functions.php";
                 <!--Menu start-->
                 <ul id="menu">
                     <li><a href="../index.php">Home</a></li>
-                    <li><a href="../all_products.php">All Products</a></li>
-                    <li><a href="my_account.php">My Account</a></li>
-                    <li><a href="#">Sign Up</a></li>
+                    <li><a href="../all_products.php">Shop</a></li>
+                    <?php
+                    if (isset($_SESSION['customer_email'])) {
+                    ?>
+
+                        <li><a href="../customer/my_account.php">My Account</a></li>
+
+                    <?php
+                    }
+                    ?>
+
+                    <?php
+                    if (!isset($_SESSION['customer_email'])) {
+                    ?>
+                        <li><a href="../customer_register.php">Sign Up</a></li>
+                    <?php
+                    }
+                    ?>
+
                     <li><a href="../cart.php">Shopping Cart</a></li>
-                    <li><a href="#">Contact Us</a></li>
                 </ul>
                 <!--Menu end-->
 
                 <!--Search bar start-->
                 <div id="form">
-                    <form method="get" action="results.php" enctype="multipart/form-data">
-                        <input style="height:40px;" type="text" name="user_query" placeholder="Search product  " />
+                    <form method="get" action="../results.php" enctype="multipart/form-data">
+                        <input class="search_input_box" style="height:40px;" type="text" name="user_query" placeholder="Search product  " />
                         <input type="submit" name="search" value="Search" />
                     </form>
                 </div>
@@ -65,122 +80,130 @@ include "functions/functions.php";
 
         <div class="content_wrapper">
 
-            <?php 
-                if(isset($_SESSION['customer_email']))
-                {
+            <?php
+            if (isset($_SESSION['customer_email'])) {
             ?>
 
-            <div id="sidebar">
-                <div id="sidebar_title">My Account</div>
+                <div id="sidebar">
+                    <div id="sidebar_title">My Account</div>
 
-                <ul id="cats">
-                    
-                    <?php
-
-                    ?>
-
-                    <li><a href="my_account.php?my_orders">My Orders</a></li>
-                    <li><a href="my_account.php?edit_account">Update Account</a></li>
-                    <li><a href="my_account.php?update_password">Update Password</a></li>
-                    <li><a href="my_account.php?delete_account">Delete Account</a></li>
-                    <li><a href="logout.php">Logout</a></li>
-
-                </ul>
-
-            </div>
-
-            <div id="content_area">
-
-                <div id="shopping_cart"> 
-                    <div id="shopping-cart-span">
-
-                        <?php
-                        if (isset($_SESSION['customer_email'])) {
-
-                            $customer = $_SESSION['customer_email'];
-
-                            $select_name = "SELECT * FROM customers WHERE customer_email = '$customer' ";
-
-                            $run_fname = mysqli_query($con, $select_name);
-
-                            $row_fname = mysqli_fetch_array($run_fname);
-
-                            $customer_fname = $row_fname['customer_fname'];
-
-                            // echo "<b>Welcome:</b>" . $_SESSION['customer_email'] . "<b style='color:yellow'></b>";
-
-                            echo "<b>Welcome:</b>" . $customer_fname . "<b style='color:yellow'></b>";
-                        } else {
-                            echo "<b>Welcome Guest</b>";
-                        }
-                        ?>
-
+                    <ul id="cats">
 
                         <?php
 
-                        if (!isset($_SESSION['customer_email'])) {
-
-                            echo "<a href='checkout.php' style='color:blue; text-decoration:none;'>Login</a>";
-                        } else {
-
-                            echo "<a href='logout.php' style='color:blue; text-decoration:none'>Logout</a>";
-                        }
-
                         ?>
 
-                    </div>
+                        <li><a href="my_account.php?my_orders">My Orders</a></li>
+                        <li><a href="my_account.php?edit_account">Update Account</a></li>
+                        <li><a href="my_account.php?update_password">Update Password</a></li>
+                        <li><a href="my_account.php?delete_account">Delete Account</a></li>
+                        <li><a href="logout.php">Logout</a></li>
+
+                    </ul>
+
                 </div>
 
-                <div id="products_box" style="justify-content:center;display:flex;flex-direction:column;">
+                <div id="content_area">
+
+                    <div id="shopping_cart">
+                        <div id="shopping-cart-span">
+
+                            <?php
+                            if (isset($_SESSION['customer_email'])) {
+
+                                $customer_email = $_SESSION['customer_email'];
+
+                                $select_name = "SELECT * FROM customers WHERE customer_email = '$customer_email' ";
+
+                                $run_fname = mysqli_query($con, $select_name);
+
+                                $row_fname = mysqli_fetch_array($run_fname);
+
+                                $customer_fname = $row_fname['customer_fname'];
+
+                                // echo "<b>Welcome:</b>" . $_SESSION['customer_email'] . "<b style='color:yellow'></b>";
+
+                                echo "<b>Welcome:</b>" . $customer_fname . "<b style='color:yellow'></b>";
+                            } else {
+                                echo "<b>Welcome Guest</b>";
+                            }
+                            ?>
+
+
+                            <?php
+
+                            if (!isset($_SESSION['customer_email'])) {
+
+                                echo "<a href='checkout.php' style='color:blue; text-decoration:none;'>Login</a>";
+                            } else {
+
+                                echo "<a href='logout.php' style='color:blue; text-decoration:none'>Logout</a>";
+                            }
+
+                            ?>
+
+                        </div>
+                    </div>
+
+                    <div id="products_box" style="justify-content:center;display:flex;flex-direction:column;">
 
                         <!-- <b>You can see your orders' progress here <a href="my_account.php?my_orders">orders</a></b> -->
 
                         <?php
-                            if(!isset($_GET['my_orders'])){
-                                if(!isset($_GET['edit_account'])){
-                                    if(!isset($_GET['update_password'])){
-                                        if(!isset($_GET['delete_account'])){
-                                            echo "
+                        if (!isset($_GET['my_orders'])) {
+                            if (!isset($_GET['edit_account'])) {
+                                if (!isset($_GET['update_password'])) {
+                                    if (!isset($_GET['delete_account'])) {
+                                        echo "
                                            
                                             <h2>Welcome Dear Customer</h2>
                                             <b>You can see your orders' progress here <a href='my_account.php?my_orders'>orders</a></b>
+                                            <h2 style='color:red;'>
+                                            The default shipping address is the address given during registering.
+                                            <br>It can be changed in the Update account section.</h2>
 
                                             ";
-                                        }
                                     }
                                 }
                             }
+                        }
                         ?>
 
                         <?php
-                            if(isset($_GET['edit_account'])){
+                        if (isset($_GET['edit_account'])) {
 
-                                include ("edit_account.php");
-                            }
+                            include("edit_account.php");
+                        }
 
-                            if(isset($_GET['update_password'])){
+                        if (isset($_GET['update_password'])) {
 
-                                include ("update_password.php");
-                            }
+                            include("update_password.php");
+                        }
 
-                            if(isset($_GET['delete_account'])){
+                        if (isset($_GET['delete_account'])) {
 
-                                include ("delete_account.php");
-                            }
+                            include("delete_account.php");
+                        }
+
+                        if (isset($_GET['my_orders'])) {
+
+                            include("my_orders.php");
+                        }
                         ?>
 
-                </div>     
-                 <!-- end of products box -->
 
-            </div>
+                    </div>
+                    <!-- end of products box -->
+
+                </div>
 
         </div>
 
-            <?php  } ?>
+    <?php  } ?>
 
-        <div id="footer">
-            <h4>&copy; Trevor Toni 2022 Best Bargain.com</h4>
-        </div>
+    <div id="footer">
+        <h4>&copy; Trevor Toni 2022 Best Bargain.com</h4>
+    </div>
 
     </div>
     <!--Main Container-->

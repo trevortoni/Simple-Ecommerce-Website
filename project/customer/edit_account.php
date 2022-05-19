@@ -44,11 +44,6 @@
                             </div>
 
                             <div class="register_input_control">
-                                <label for="customer_pass">Password</label>
-                                <input type="password" name="customer_pass" value="<?php echo $pass ?>" placeholder="Enter password" required>
-                            </div>
-
-                            <div class="register_input_control">
                                 <label for="customer_county">County</label>
                                 <select style="height:40px" type="text" name="customer_county" placeholder="Enter county of residence" required>
                                     <option> <?php echo $county; ?> </option>

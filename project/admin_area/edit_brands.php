@@ -1,4 +1,11 @@
-<?php include "includes/db.php"; 
+<?php 
+session_start();
+include "includes/db.php";
+if(!isset($_SESSION['admin_email']))
+{
+   echo "<script>window.open('admin_login.php','_self')</script>";
+}
+else{
 
 if(isset($_GET['edit_brand'])){
 
@@ -36,6 +43,7 @@ if(isset($_GET['edit_brand'])){
 </div>
 
 <?php
+}
 
 if (isset($_POST['update_brand_button'])) {
 

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "functions/functions.php";
 ?>
 <!DOCTYPE html>
@@ -26,32 +27,12 @@ include "functions/functions.php";
 
             <a href="index.php"><img id="logo" src="images/Best Bargain5.png" /></a>
             <!-- <img id="banner" src="images/Best Bargain5.png" /> -->
-            <div id="banner"><h1>Affordable household solutions</h1></div>
+            <div id="banner">
+                <h1>Affordable household solutions</h1>
+            </div>
 
             <!--Navigation start-->
-            <div class="menubar">
-
-                <!--Menu start-->
-                <ul id="menu">
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="all_products.php">All Products</a></li>
-                    <li><a href="customer/my_account.php">My Account</a></li>
-                    <li><a href="customer_register.php">Sign Up</a></li>
-                    <li><a href="cart.php">Shopping Cart</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-                <!--Menu end-->
-
-                <!--Search bar start-->
-                <div id="form">
-                    <form method="get" action="results.php" enctype="multipart/form-data">
-                        <input type="text" name="user_query" placeholder="Search product  " />
-                        <input type="submit" name="search" value="Search" />
-                    </form>
-                </div>
-                <!--Search bar end-->
-
-            </div>
+            <?php include "menubar.php"; ?>
             <!--Navigation end-->
 
         </div>
@@ -59,31 +40,22 @@ include "functions/functions.php";
 
         <div class="content_wrapper">
 
-            <div id="sidebar">
-                <div id="sidebar_title">Categories</div>
+            <!--sidebar start-->
+            <?php include "sidebar.php"; ?>
+            <!--sidebar end-->
 
-                <ul id="cats">
-                    <?php getCats(); ?>
-                </ul>
+             <!--content-area start-->
+            <div id="content_area"> 
 
-                <div id="sidebar_title">Brands</div>
+                <!-- shopping_cart start-->
+                <?php include "shopping_cart.php"; ?>
+                <!-- shopping_cart end-->
+                <?php cart(); ?>
 
-                <ul id="cats">
-                    <?php getBrands(); ?>
-                </ul>
-
-            </div>
-
-            <div id="content_area">
-                <div id="shopping_cart">
-                    <span>
-                        Welcome Guest <b style="color:yellow;"><i class="fa-solid fa-cart-shopping"></i></b>Total items: Total price: <a href="cart.php" style="color:yellow;">
-                            Go to Cart</a>
-                    </span>
-                </div>
+                <!--products-box start-->
                 <div id="products_box">
                     <?php
-                    $get_pro = "SELECT * FROM products";
+                    $get_pro = "SELECT * FROM products ORDER BY product_id DESC ";
                     $run_pro = mysqli_query($con, $get_pro);
 
                     while ($row_pro = mysqli_fetch_array($run_pro)) {
@@ -99,25 +71,27 @@ include "functions/functions.php";
 
                         echo " 
                       <div id='single_product' > 
-                        <div id='single_product_title'>
-                          <h5>$pro_title</h5>
-                        </div>
-                        <img src='admin_area/product_images/$pro_image'/>
-                        <p><b>Price: Ksh $pro_price_formatted</b></p>
-                        <a id='details' href='details.php?pro_id=$pro_id'>Details</a>
-                        <a id='price' href='index.php'><button>Add to Cart</button></a> 
+                            <div id='single_product_title'>
+                            <h5>$pro_title</h5>
+                            </div>
+                            <img src='admin_area/product_images/$pro_image'/>
+                            <p><b>Price: Ksh $pro_price_formatted</b></p>
+                            <a id='details' href='details.php?pro_id=$pro_id'>Details</a>
+                        <!-- <a id='price' href='index.php'><button>Add to Cart</button></a>  -->
                       </div>
                        ";
                     } //end of while loop
                     ?>
                 </div>
+                 <!--products-box end-->
             </div>
+            <!--content-area end-->
 
         </div>
 
-        <div id="footer">
-            <h4>&copy; Trevor Toni 2022 Best Bargain.com</h4>
-        </div>
+        <!-- footer start -->
+        <?php require "footer.php" ?>
+        <!-- footer end -->
 
     </div>
     <!--Main Container-->

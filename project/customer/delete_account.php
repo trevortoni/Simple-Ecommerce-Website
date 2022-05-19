@@ -2,7 +2,7 @@
     <form action="" method="post">
         <div class="delete_account_form_header">
             <h2>Are you sure you want to DELETE your account?</h2>
-            <h3>This action cannot be undone</h3>
+            <h3 style="color:red;">This action is permanent and cannot be undone!</h3>
         </div>
 
         <div class="delete_buttons_container">
@@ -31,13 +31,11 @@
             <script>alert('Your Account has been deleted')</script>
             <script>window.open('../index.php','_self')</script>
             ";
+
+            session_unset();
         }
 
         if(isset($_POST['no'])){
-
-            $delete_customer = "DELETE FROM customers WHERE customer_email = '$customer_email' ";
-
-            $execute_delete = mysqli_query($con,$delete_customer);
 
             echo "
             <script>window.open('my_account.php','_self')</script>

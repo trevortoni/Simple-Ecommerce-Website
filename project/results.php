@@ -30,29 +30,7 @@ include "functions/functions.php";
             </div>
 
             <!--Navigation start-->
-            <div class="menubar">
-
-                <!--Menu start-->
-                <ul id="menu">
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="all_products.php">All Products</a></li>
-                    <li><a href="customer/my_account.php">My Account</a></li>
-                    <li><a href="#">Sign Up</a></li>
-                    <li><a href="cart.php">Shopping Cart</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-                <!--Menu end-->
-
-                <!--Search bar start-->
-                <div id="form">
-                    <form method="get" action="results.php" enctype="multipart/form-data">
-                        <input type="text" name="user_query" placeholder="Search product" style="text-align:center;font-weight:700" />
-                        <input type="submit" name="search" value="Search" />
-                    </form>
-                </div>
-                <!--Search bar end-->
-
-            </div>
+            <?php include "menubar.php"; ?>
             <!--Navigation end-->
 
         </div>
@@ -60,28 +38,14 @@ include "functions/functions.php";
 
         <div class="content_wrapper">
 
-            <div id="sidebar">
-                <div id="sidebar_title">Categories</div>
-
-                <ul id="cats">
-                    <?php getCats(); ?>
-                </ul>
-
-                <div id="sidebar_title">Brands</div>
-
-                <ul id="cats">
-                    <?php getBrands(); ?>
-                </ul>
-
-            </div>
+            <!--sidebar start-->
+            <?php include "sidebar.php"; ?>
+            <!--sidebar end-->
 
             <div id="content_area">
-                <div id="shopping_cart">
-                    <span>
-                        Welcome Guest <b style="color:yellow;">Shopping Cart-</b>Total items: Total price: <a href="cart.php" style="color:yellow;">
-                            Go to Cart</a>
-                    </span>
-                </div>
+                <!-- shopping_cart start-->
+                <?php include "shopping_cart.php"; ?>
+                <!-- shopping_cart end-->
                 <div id="products_box">
                     <?php
 
@@ -108,17 +72,19 @@ include "functions/functions.php";
                                 $pro_price = $row_pro['product_price'];
                                 $pro_image = $row_pro['product_image'];
 
+                                $pro_price_formatted = number_format($pro_price);
+
                                 echo " 
-                       <div id='single_product'> 
-                        <div style='height:50px;width:100%;border-bottom:1px solid black;margin-bottom:10px;'>
-                        <h5>$pro_title</h5>
-                        </div>
-                        <img src='admin_area/product_images/$pro_image'/>
-                        <p><b>Ksh $pro_price</b></p>
-                        <a style='float:left' href='details.php?pro_id=$pro_id'>Details</a>
-                        <a style='float:right' href='index.php'><button>Add to Cart</button></a> 
-                      </div>
-                       ";
+                            <div id='single_product'> 
+                                <div style='height:50px;width:100%;border-bottom:1px solid black;margin-bottom:10px;'>
+                                <h5>$pro_title</h5>
+                                </div>
+                                <img src='admin_area/product_images/$pro_image'/>
+                                <p style='color:black;'><b> Price: Ksh $pro_price_formatted</b></p>
+                                <a id='details' href='details.php?pro_id=$pro_id' >Details</a>
+                            <!-- <a style='float:right' href='index.php'><button>Add to Cart</button></a> -->
+                            </div>
+                          ";
                             } //end of while loop
                         } else {
                             echo "<h2>Sorry no products available with that name</h2>";
@@ -130,9 +96,10 @@ include "functions/functions.php";
 
         </div>
 
-        <div id="footer">
-            <h4>&copy; Trevor Toni 2022 Best Bargain.com</h4>
-        </div>
+        <!-- footer start -->
+        <?php require "footer.php" ?>
+        <!-- footer end -->
+
 
     </div>
     <!--Main Container-->

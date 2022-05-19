@@ -1,4 +1,13 @@
-<?php include "includes/db.php"; ?>
+<?php
+session_start();
+ include "includes/db.php";
+ if(!isset($_SESSION['admin_email']))
+{
+    echo "<script>window.open('admin_login.php','_self')</script>";
+}
+else{
+?>
+?>
 
 <div class="add_category_form_container">
 
@@ -19,6 +28,7 @@
 </div>
 
 <?php
+}
 
 if (isset($_POST['add_brand_button'])) {
 

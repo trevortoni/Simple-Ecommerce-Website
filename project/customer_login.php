@@ -50,8 +50,27 @@ include "includes/db.php";
 
                 $customer_pass = $_POST['customer_pass'];
 
+                //check if any field is empty
+                if ( empty($customer_email) || empty($customer_pass) ) {
+                    echo "<script>alert('All fields are required')</script>";
+                    exit();
+                }
 
-                //sekect from the user from the database
+
+                //validate the email address
+                if (!filter_var($customer_email, FILTER_VALIDATE_EMAIL)) {
+                    echo "<script>alert('Enter a valid email address')</script>";
+                    exit();
+                }
+
+                //validate the customer passwords
+                if (strlen($customer_pass) < 6) {
+                    echo "<script>alert('Password should be at least 6 characters long!')</script>";
+                    exit();
+                }
+
+
+                //select from the user from the database
                 $select_customer = "SELECT * FROM customers WHERE customer_pass = ? AND customer_email = ? "; 
 
                 

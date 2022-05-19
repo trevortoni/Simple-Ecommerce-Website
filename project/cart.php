@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include "functions/functions.php";
 include "includes/db.php";
+$_SESSION['qty'] = 1;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +13,7 @@ include "includes/db.php";
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Best-Bargain</title>
+    <title>Best Bargain</title>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,29 +40,7 @@ include "includes/db.php";
             </div>
 
             <!--Navigation start-->
-            <div class="menubar">
-
-                <!--Menu start-->
-                <ul id="menu">
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="all_products.php">All Products</a></li>
-                    <li><a href="customer/my_account.php">My Account</a></li>
-                    <li><a href="customer_register.php">Sign Up</a></li>
-                    <li><a href="cart.php">Shopping Cart</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-                <!--Menu end-->
-
-                <!--Search bar start-->
-                <div id="form">
-                    <form method="get" action="results.php" enctype="multipart/form-data">
-                        <input type="text" name="user_query" placeholder="Search product  " />
-                        <input type="submit" name="search" value="Search" />
-                    </form>
-                </div>
-                <!--Search bar end-->
-
-            </div>
+            <?php include "menubar.php"; ?>
             <!--Navigation end-->
 
         </div>
@@ -69,238 +48,195 @@ include "includes/db.php";
 
         <div class="content_wrapper">
 
-            <div id="sidebar">
-                <div id="sidebar_title">Categories</div>
+            <div style="width:100%;" id="content_area">
 
-                <ul id="cats">
-                    <?php getCats(); ?>
-                </ul>
-
-                <div id="sidebar_title">Brands</div>
-
-                <ul id="cats">
-                    <?php getBrands(); ?>
-                </ul>
-
-            </div>
-
-            <div id="content_area">
-
-                <div id="shopping_cart">
-                    <div id="shopping-cart-span">
-
-                        <?php
-                        if (isset($_SESSION['customer_email'])) {
-                            echo "<b>Welcome:</b>" . $_SESSION['customer_email'] . "<b style='color:yellow'></b>";
-                        } else {
-                            echo "<b>Welcome Guest</b>";
-                        }
-                        ?>
-
-                        <b style="color:yellow;"><i class="fa-solid fa-cart-shopping"></i></b>Total items: <?php totalItems(); ?> Total
-                        Price:<?php totalPrice(); ?> <a href="cart.php" style="color:yellow;">Go to Cart </a>
-
-                        <?php
-
-                        if (!isset($_SESSION['customer_email'])) {
-
-                            echo "<a href='checkout.php' style='color:blue; text-decoration:none;'>Login</a>";
-                        } else {
-
-                            echo "<a href='logout.php' style='color:blue; text-decoration:none'>Logout</a>";
-                        }
-
-                        ?>
-
-                    </div>
-                </div>
+                <!-- shopping_cart start-->
+                <?php include "shopping_cart.php"; ?>
+                <!-- shopping_cart end-->
                 <?php cart(); ?>
 
 
-                <div id="products_box" style="width:90%;">
-                    <form style="width:100%;" action="" method="post" enctype="multipart/form-data" style="margin:-50px 0 0 180px;display:flex;flex-direction:column">
+                <div style="max-width:100%;padding:20px;flex-direction:row;flex-wrap:wrap;" id="products_box">
 
-                        <table style="margin:10px auto;padding:10px;justify-content:center;width:90%; background:aliceblue; border:1px solid black;">
+                    <div class="shopping_cart_form_container">
+                        <form style="width:100%;" action="" method="post" enctype="multipart/form-data" style="display:flex;flex-direction:column">
 
-                            <tr style="margin:auto;">
-                                <td colspan="5">
-                                    <h2 style="padding:20px">SHOPPING CART</h2>
-                                </td>
-                            </tr>
-                            <tr style="margin:auto;">
-                                <th colspan="2">Remove</th>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Total Price</th>
-                            </tr>
+                            <table style="margin:10px auto;padding:20px;justify-content:center;width:90%; background:aliceblue; border:1px solid black;">
 
-
-                            <?php
-
-                            $total = 0;
-
-                            $ip = getIp();
-
-                            $sel_price = "SELECT * FROM cart WHERE ip_add = '$ip' ";
-
-                            $run_price = mysqli_query($con, $sel_price);
-
-                            while ($p_price = mysqli_fetch_array($run_price)) {
-
-                                $pro_id = $p_price['p_id'];
-
-                                $pro_price = "SELECT * FROM products WHERE product_id = '$pro_id' ";
-
-                                $run_pro_price =  mysqli_query($con, $pro_price);
-
-                                while ($p_price = mysqli_fetch_array($run_pro_price)) {
-
-                                    $product_price = array($p_price['product_price']);
-
-                                    $product_title = $p_price['product_title'];
-
-                                    $product_image = $p_price['product_image'];
-
-                                    $single_price = $p_price['product_price'];
-
-                                    // $product_id = $pp_price['product_id'];
-
-                                    $values = array_sum($product_price);
-
-                                    $total = $total + $values;
+                                <tr style="margin:auto;">
+                                    <td colspan="5">
+                                        <h2 style="padding:20px">SHOPPING CART</h2>
+                                    </td>
+                                </tr>
+                                <tr style="margin:auto;">
+                                    <th width="20%">Product Image</th>
+                                    <th width="30%">Product Name</th>
+                                    <th width="15%">Unit Price</th>
+                                    <th width="10%">Quantity</th>
+                                    <th width="15%">Sub Total</th>
+                                    <th width="10%">Remove</th>
+                                </tr>
 
 
-                            ?>
+                                <?php
 
-                                    <tr style="margin:auto;">
-                                        <td colspan="2"><input type="checkbox" name="remove[]" value="<?php echo $pro_id; ?>" /></td>
-                                        <td ><?php echo $product_title; ?><br>
-                                            <img src="admin_area/product_images/<?php echo $product_image; ?>" width="60px" height="60px" />
-                                        </td>
-                                        <td><input style="text-align:center;" type="number" min="1" id="qty_input" name="qty" value="<?php echo $_SESSION["qty"]; ?>" /></td>
+                                $total = 0;
 
-                                        <!-- <script>
-                                            var qtyInput = document.getElementById("qty_input");
+                                $ip = getIp();
 
-                                            window.onload = function() {
-                                                if (sessionStorage.getItem("autosave"))
-                                                    qtyInput.value = sessionStorage.getItem("autosave");
-                                            }
+                                $sel_cart = "SELECT * FROM cart WHERE ip_add = '$ip' ";
 
-                                            qtyInput.addEventListener("keyup", function() {
-                                                sessionStorage.setItem("autosave", qtyInput.value);
-                                            });
-                                        </script> -->
+                                $run_cart = mysqli_query($con, $sel_cart);
 
-                                        <?php
+                                while ($row_cart = mysqli_fetch_array($run_cart)) {
 
-                                        if (isset($_POST['update_cart'])) {
+                                    $pro_id = $row_cart['p_id'];
 
-                                            $ip = getIp();
+                                    $pro_qty = $row_cart['qty'];
 
-                                            if (isset($_SESSION['customer_email']) && $_SESSION['qty'] == 0) {
+                                    $get_product = "SELECT * FROM products WHERE product_id = '$pro_id' ";
 
-                                                $_SESSION['qty'] = 1;
-                                            }
-                                            // else{
-                                            //     $_SESSION['qty'] =  $_SESSION['qty'];
-                                            // }
+                                    $run_get_product =  mysqli_query($con, $get_product);
 
-                                            $qty = $_POST['qty'];
+                                    while ($product_row = mysqli_fetch_array($run_get_product)) {
 
-                                            // $update_qty = "UPDATE cart SET qty = $qty WHERE ip_add= '$ip' AND ";
+                                        $product_title = $product_row['product_title'];
 
-                                            $update_qty = "UPDATE cart SET qty = $qty WHERE ip_add = $ip AND p_id = $pro_id";
+                                        $product_image = $product_row['product_image'];
 
-                                            $run_qty = mysqli_query($con,$update_qty);
- 
+                                        $single_price = $product_row['product_price'];
 
-                                            // try{
-                                            //      $update_qty = "UPDATE cart SET qty = $qty WHERE pro_id = $pro_id ";
+                                        $sub_total = $pro_qty * $single_price;
 
-                                            //     $run_qty = mysqli_query($con,$update_qty);
-
-                                            // }catch(mysqli_sql_exception $e){
-                                            //     var_dump($e);
-                                            //     exit; 
-
-                                            // }
-
-                                            $_SESSION['qty'] = $qty;
-
-                                            (int)$total =  (int)$total *  (int)$qty;
-                                            (int)$total=(int)$total* (int)$qty;
-
-                                            // (int)$single_price=(int)$single_price* (int)$qty;
-
-                                            
-                                        }
+                                        $total = $total + $sub_total;
 
 
+                                ?>
 
-                                        ?>
+                                        <tr style="margin:auto;">
+                                            <td><img src="admin_area/product_images/<?php echo $product_image; ?>" width="60px" height="40px" /></td>
+                                            <td><a style="color:blue;text-decoration:none;" href="details.php?pro_id=<?php echo $pro_id; ?>">
+                                                    <p style="font-size:small;"><?php echo $product_title; ?></p>
+                                                </a></td>
+                                            <td><?php echo $single_price; ?></td>
+                                            <td><?php echo $pro_qty; ?></td>
+                                            <td><?php echo "Ksh " . $sub_total; ?></td>
+                                            <td colspan="2"><input type="checkbox" name="remove[]" value="<?php echo $pro_id; ?>" /></td>
+                                        </tr>
+                                <?php }
+                                } ?>
 
+                                <tr>
+                                    <td colspan="4" style="text-align:right;padding-right:20px;width:65%; "><b>Cart Total: </b></td>
+                                    <td style="text-align:left;width:35%"><?php echo "Ksh " . $total; ?></td>
+                                </tr>
 
-                                        <td><?php echo "Ksh " . $single_price; ?></td>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2"><input type="submit" name="continue" value="Continue Shopping" /></td>
+                                        <td colspan="2"><input type="submit" name="update_cart" value="Update Cart" /></td>
+                                        <td><button><a href="checkout.php" style="text-decoration:none;color:black;">Checkout</a></button></td>
                                     </tr>
-                            <?php }
-                            } ?>
-
-                            <tr>
-                                <td colspan="4" style="text-align:right;padding-right:20px;width:65%; "><b>Sub Total: </b></td>
-                                <td style="text-align:left;width:35%"><?php echo "Ksh " . $total; ?></td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2"><input type="submit" name="update_cart" value="Update Cart" /></td>
-                                <td  colspan="2"><input type="submit" name="continue" value="Continue Shopping" /></td>
-                                <td><button><a href="checkout.php" style="text-decoration:none;color:black;">Checkout</a></button></td>
-
-                            </tr>
+                                </tfoot>
 
 
-                        </table>
+                            </table>
 
-                    </form>
+                        </form>
+                    </div> <!-- //shopping cart form container end -->
 
-                    <?php
-                    // function updateCart()
-                    // {
-                    //     global $con;
+                    <div class="order_summary" style="background-color:white;width:30%;min-height:300px;max-height:fit-content;margin-top:10px;">
+                        <div class="order_summary_header">
+                            <h3 style="margin-bottom:10px;">Order Summary</h3>
+                        </div>
+                        <p>Shipping and additional costs are applied*</p>
+                        <div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Order Subtotal</td>
+                                        <th><?php echo 'Ksh' . $total; ?></th>
+                                    </tr>
 
-                    $ip = getIP();
+                                    <tr>
+                                        <td>Shipping and handling</td>
+                                        <th>Ksh 0</th>
+                                    </tr>
 
-                    if (isset($_POST['update_cart'])) {
+                                    <tr>
+                                        <td>Vat</td>
+                                        <th>
+                                            <?php
+                                            $vat = $total * 0.13;
+                                            $vat_rounded = round($vat, 0);
+                                            echo 'Ksh' . $vat_rounded;
+                                            ?>
+                                        </th>
+                                    </tr>
 
-                        if (isset($_POST['remove'])) { 
+                                </tbody>
 
-                            foreach ($_POST['remove'] as $remove_id) {
+                                <tfoot>
+                                    <tr>
+                                        <th>Total</th>
+                                        <th>
+                                            <?php
+                                            $final_total = $total + $vat;
+                                            $final_total_formatted = round($final_total, 0);
+                                            echo 'Ksh' . $final_total_formatted;
+                                            ?>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
 
-                                $delete_product = "DELETE FROM cart WHERE p_id = '$remove_id' AND ip_add = '$ip'";
+                </div> <!-- //products box end -->
 
-                                $run_delete = mysqli_query($con, $delete_product);
-                                if ($run_delete) {
-                                    echo "<script>window.open('cart.php','_self')</script>";
-                                }
+
+                <?php
+                // function updateCart()
+                // {
+                //     global $con;
+
+                $ip = getIP();
+
+                if (isset($_POST['update_cart'])) {
+
+                    if (isset($_POST['remove'])) {
+
+                        foreach ($_POST['remove'] as $remove_id) {
+
+                            $delete_product = "DELETE FROM cart WHERE p_id = '$remove_id' AND ip_add = '$ip'";
+
+                            $run_delete = mysqli_query($con, $delete_product);
+                            if ($run_delete) {
+                                echo "<script>window.open('cart.php','_self')</script>";
                             }
                         }
                     }
+                }
 
-                    if (isset($_POST['continue'])) {
-                        echo "<script>window.open('index.php','_self')</script>";
-                    }
+                if (isset($_POST['continue'])) {
+                    echo "<script>window.open('index.php','_self')</script>";
+                }
 
-                    //     echo $up_cart = updateCart();// if function is not working dont generate error 
-                    // }
-                    ?>
-                </div>
+                //     echo $up_cart = updateCart();// if function is not working dont generate error 
+                // }
+                ?>
             </div>
 
+
+
+
         </div>
 
-        <div id="footer">
-            <h4>&copy; Trevor Toni 2022 Best Bargain.com</h4>
-        </div>
+    </div>
+
+    <!-- footer start -->
+    <?php require "footer.php" ?>
+    <!-- footer end -->
 
     </div>
     <!--Main Container-->

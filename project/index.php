@@ -33,29 +33,7 @@ include "functions/functions.php";
             </div>
 
             <!--Navigation start-->
-            <div class="menubar">
-
-                <!--Menu start-->
-                <ul id="menu">
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="all_products.php">All Products</a></li>
-                    <li><a href="customer/my_account.php">My Account</a></li>
-                    <li><a href="customer_register.php">Sign Up</a></li>
-                    <li><a href="cart.php">Shopping Cart</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-                <!--Menu end-->
-
-                <!--Search bar start-->
-                <div id="form">
-                    <form method="get" action="results.php" enctype="multipart/form-data">
-                        <input style="height:40px;" type="text" name="user_query" placeholder="Search product  " />
-                        <input type="submit" name="search" value="Search" />
-                    </form>
-                </div>
-                <!--Search bar end-->
-
-            </div>
+            <?php include "menubar.php"; ?>
             <!--Navigation end-->
 
         </div>
@@ -63,55 +41,17 @@ include "functions/functions.php";
 
         <div class="content_wrapper">
 
-            <div id="sidebar">
-                <div id="sidebar_title">Categories</div>
+            <!--sidebar start-->
 
-                <ul id="cats">
-                    <?php getCats(); ?>
-                </ul>
+            <?php include "sidebar.php";     ?>
 
-                <div id="sidebar_title">Brands</div>
-
-                <ul id="cats">
-                    <?php getBrands(); ?>
-                </ul>
-
-            </div>
+            <!--sidebar end-->
 
             <div id="content_area">
 
-                <div id="shopping_cart">
-                    <div id="shopping-cart-span" >
-
-                        <?php
-                        if (isset($_SESSION['customer_email'])) {
-                            echo "<b>Welcome:</b>" . $_SESSION['customer_email'] . "<b style='color:yellow'></b>";
-                        } else {
-                            echo "<b>Welcome Guest</b>";
-                        }
-                        ?>
-
-                        <b style="color:yellow;"><i class="fa-solid fa-cart-shopping"></i></b>Total items: <?php totalItems(); ?> Total
-                        Price:<?php totalPrice(); ?> <a href="cart.php" style="color:yellow;">Go to Cart </a>
-
-                        <?php
-
-                        if(!isset($_SESSION['customer_email']))
-                        {
-                          
-                          echo "<a href='checkout.php' style='color:blue; text-decoration:none;'>Login</a>";
-                        }
-     
-                        else
-                        {
-                           
-                            echo "<a href='logout.php' style='color:blue; text-decoration:none'>Logout</a>";
-                        }
-
-                        ?>
-
-                    </div>
-                </div>
+                <!-- shopping_cart start-->
+                <?php include "shopping_cart.php"; ?>
+                <!-- shopping_cart end-->
                 <?php cart(); ?>
 
                 <div id="products_box">
@@ -129,12 +69,12 @@ include "functions/functions.php";
 
         </div>
 
-        <div id="footer">
-            <h4>&copy; Trevor Toni 2022 Best Bargain.com</h4>
-        </div>
+        <!-- footer start -->
+        <?php require "footer.php" ?>
+        <!-- footer end -->
 
     </div>
-    <!--Main Container-->
+    <!--Main Container end-->
 </body>
 
 </html>

@@ -1,3 +1,11 @@
+<?php
+session_start();
+if(!isset($_SESSION['admin_email']))
+{
+    echo "<script>window.open('admin_login.php','_self')</script>";
+}
+else{
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,9 +18,10 @@
 </head>
 
 <body>
+
     <div class="main_wrapper">
 
-        <div class="header">
+           <div class="header">
             <img src="images/admin_panel.png">
         </div>
 
@@ -29,13 +38,13 @@
             <a href="index.php?view_customers">View Customers</a>
             <a href="index.php?view_orders">View Orders</a>
             <a href="index.php?view_payments">View Payments</a>
-            <a href="index.php?logout">Logout</a>
+            <a href="index.php?admin_logout">Logout</a>
 
         </div>
 
         <div class="content">
             <?php
-
+       
                 if(isset($_GET['insert_new_product'])){
                     include "insert_product.php";
                 }
@@ -92,10 +101,27 @@
                     include "delete_customer.php";
                 }
 
+                if(isset($_GET['view_orders'])){
+                    include "view_orders.php";
+                }
+
+                if(isset($_GET['view_payments'])){
+                    include "view_payments.php";
+                }
+
+
+                if(isset($_GET['admin_logout'])){
+
+                    include "admin_logout.php";
+                }
+
+
             ?>
         </div>
 
     </div>
+
 </body>
 
 </html>
+<?php } ?>

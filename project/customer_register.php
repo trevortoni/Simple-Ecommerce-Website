@@ -4,6 +4,8 @@ ini_set('display_errors', 1);
 include "functions/functions.php";
 include "includes/db.php";
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,29 +35,7 @@ include "includes/db.php";
             </div>
 
             <!--Navigation start-->
-            <div class="menubar">
-
-                <!--Menu start-->
-                <ul id="menu">
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="all_products.php">All Products</a></li>
-                    <li><a href="customer/my_account.php">My Account</a></li>
-                    <li><a href="#">Sign Up</a></li>
-                    <li><a href="cart.php">Shopping Cart</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-                <!--Menu end-->
-
-                <!--Search bar start-->
-                <div id="form">
-                    <form method="get" action="results.php" enctype="multipart/form-data">
-                        <input type="text" name="user_query" placeholder="Search product  " />
-                        <input type="submit" name="search" value="Search" />
-                    </form>
-                </div>
-                <!--Search bar end-->
-
-            </div>
+            <?php include "menubar.php"; ?>
             <!--Navigation end-->
 
         </div>
@@ -63,29 +43,17 @@ include "includes/db.php";
 
         <div class="content_wrapper">
 
-            <div id="sidebar">
-                <div id="sidebar_title">Categories</div>
-
-                <ul id="cats">
-                    <?php getCats(); ?>
-                </ul>
-
-                <div id="sidebar_title">Brands</div>
-
-                <ul id="cats">
-                    <?php getBrands(); ?>
-                </ul>
-
-            </div>
-
+              <!--Sidebar start-->
+              <?php include "sidebar.php"; ?>
+              <!--Sidebar end-->   
             <div id="content_area">
+
+                 <!-- shopping_cart start-->
+                 <?php include "shopping_cart.php"; ?>
+                <!-- shopping_cart end-->
+                
                 <?php cart(); ?>
-                <div id="shopping_cart">
-                    <span style="float:right;font-size:18px;padding:5px;line-height:40px;">
-                        Welcome Guest <b style="color:yellow;">Shopping Cart-</b>Total items: <?php totalItems(); ?> Total price:<?php totalPrice(); ?> <a href="cart.php" style="color:yellow;">
-                            Go to Cart</a>
-                    </span>
-                </div>
+
 
                 <!-- Register form -->
                 <div class="register_form_container">
@@ -99,12 +67,12 @@ include "includes/db.php";
 
                             <div class="register_input_control">
                                 <label for="customer_fname">First Name</label>
-                                <input type="text" name="customer_fname" placeholder="Enter your first name" required>
+                                <input type="text" name="customer_fname" placeholder="Enter your first name"  required>
                             </div>
 
                             <div class="register_input_control">
                                 <label for="customer_lname">Last Name</label>
-                                <input type="text" name="customer_lname" placeholder="Enter your last name" required>
+                                <input type="text" name="customer_lname" placeholder="Enter your last name"  required>
                             </div>
 
                             <div class="register_input_control">
@@ -119,7 +87,7 @@ include "includes/db.php";
 
                             <div class="register_input_control">
                                 <label for="customer_pass_repeat">Confirm Password</label>
-                                <input type="password" name="customer_pass_repeat" placeholder="Confirm password" required>
+                                <input type="password" name="customer_pass_repeat" placeholder="Confirm password"  required>
                             </div>
 
                             <div class="register_input_control">
@@ -197,10 +165,8 @@ include "includes/db.php";
                             <button class="register_button" type="submit" name="register" value="Register">Signup</button>
                         </div>
 
-                        <!-- <h3><a href="customer_login.php">Already registered? Login Here</a></h3> -->
                         <h3><a href="checkout.php">Already registered? Login Here</a></h3>
 
-                        <!-- <div id="alert_box"> </div> -->
 
                     </form>
                 </div>
@@ -222,12 +188,11 @@ include "includes/db.php";
 
 <?php
 
-if (isset($_POST['register']))
-{
+if (isset($_POST['register'])) {
 
     $ip = getIp();
 
-    //text data
+    //form data
     $customer_fname =  $_POST['customer_fname'];
     $customer_lname =  $_POST['customer_lname'];
     $customer_email =  $_POST['customer_email'];
@@ -238,91 +203,70 @@ if (isset($_POST['register']))
     $customer_contact = $_POST['customer_contact'];
     $customer_address =  $_POST['customer_address'];
 
-    //image data
-    // $customer_image = $_FILES['customer_image']['name'];
-    // $customer_image_tmp = $_FILES['customer_image']['tmp_name'];
-
-    // move_uploaded_file($customer_image_tmp, "customer/customer_images/$customer_image");
-
     //Form validation section
 
     $name_regex = "/^[a-zA-Z ]+$/";
-    $email_regex = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9]+(\.[a-z]{2,4})$/";
-	$contact_regex = "/^[0-9]+$/";
+    $contact_regex = "/^[0-9]+$/";
 
-    if (empty($customer_fname)||empty($customer_lname)||empty($customer_email)||empty($customer_pass)||empty($customer_pass_repeat)||empty($customer_county)||empty($customer_city)||empty($customer_contact)||empty($customer_address) ) 
-    {
+    if (empty($customer_fname) || empty($customer_lname) || empty($customer_email) || empty($customer_pass) || empty($customer_pass_repeat) || empty($customer_county) || empty($customer_city) || empty($customer_contact) || empty($customer_address)) {
         echo "<script>alert('All fields are required')</script>";
         exit();
-    } 
+    } else {
 
-    else
-    {
-
-        if(!preg_match($name_regex,$customer_fname))
-        {
+        if (!preg_match($name_regex, $customer_fname)) {
             echo "<script>alert('$customer_fname is not a valid name')</script>";
             exit();
         }
 
-        if(!preg_match($name_regex,$customer_lname))
-        {
+        if (!preg_match($name_regex, $customer_lname)) {
             echo "<script>alert('$customer_lname is not a valid name')</script>";
             exit();
         }
 
-        if(!preg_match($email_regex,$customer_email))
-        {
-            echo "<script>alert('$customer_email is not a valid email')</script>";
+        if (!filter_var($customer_email, FILTER_VALIDATE_EMAIL)) {
+            echo "<script>alert('Your email is not a valid email address')</script>";
             exit();
         }
 
-        if(strlen($customer_pass) < 6 )
-        {
+
+        if (strlen($customer_pass) < 6) {
             echo "<script>alert('Password should be at least 6 characters long!')</script>";
             exit();
         }
 
-        if(strlen($customer_pass_repeat) < 6 )
-        {
+        if (strlen($customer_pass_repeat) < 6) {
             echo "<script>alert('Password should be at least 6 characters long!')</script>";
             exit();
         }
 
-        if($customer_pass != $customer_pass_repeat)
-        {
+        if ($customer_pass != $customer_pass_repeat) {
             echo "<script>alert('Passwords do not match!')</script>";
             exit();
         }
 
-        if(!preg_match($contact_regex,$customer_contact))
-        {
+        if (!preg_match($contact_regex, $customer_contact)) {
             echo "<script>alert('Mobile number is not valid!')</script>";
             exit();
         }
 
-        if(!(strlen($customer_contact) == 10)){
-           
-            echo "<script>alert('Mobile number must be 10 characters long!')</script>";
+        if (!(strlen($customer_contact) == 10)) {
+
+            echo "<script>alert('Phone number must be 10 characters long!')</script>";
             exit();
         }
 
-        //existing email address in our database
-        $check_email = "SELECT * FROM customers WHERE customer_email = ? "; 
-        $stmt = mysqli_prepare($con,$check_email);
-        mysqli_stmt_bind_param($stmt,'s',$customer_email);
+        //check if there is an existing email address in database
+        $check_email = "SELECT * FROM customers WHERE customer_email = ? ";
+        $stmt = mysqli_prepare($con, $check_email);
+        mysqli_stmt_bind_param($stmt, 's', $customer_email);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_store_result($stmt);
         $email_check_count = mysqli_stmt_num_rows($stmt);
 
-        if($email_check_count > 0)
-        {
+        if ($email_check_count > 0) {
             echo "<script>alert('Email is already taken.Try another email address!')</script>";
             exit();
-        }
-
-        else
-        {
+        } else {
 
             $insert_customer = "INSERT INTO customers (customer_ip,customer_fname,customer_lname,customer_email,customer_pass,customer_county,customer_city,customer_contact,customer_address)
             VALUES (?,?,?,?,?,?,?,?,?)";
@@ -333,48 +277,29 @@ if (isset($_POST['register']))
 
             mysqli_stmt_execute($stmt);
 
-            // $execval = mysqli_stmt_execute($stmt);
-
-            // if ($execval)
-            // {
-            //     echo "<script>alert('Registration successful')</script>";
-            //     echo "<script>window.open('customer_register.php','_self')</script>";
-            //     header("Refresh:0");
-            // } 
-            // else
-            // {
-
-            //     echo "<script>alert('Registration not successful')</script>";
-            //     echo "<script>window.open('customer_register.php','_self')</script>";
-            // }
-
-
             $select_cart = "SELECT * FROM cart WHERE ip_add ='$ip'";
             $run_cart = mysqli_query($con, $select_cart);
             $check_cart = mysqli_num_rows($run_cart);
 
-            if ($check_cart == 0)
-            {
+            if ($check_cart == 0) {
 
                 $_SESSION['customer_email'] = $customer_email;
                 echo "<script>alert('Account has been created successfully!')</script>";
                 // echo "<script>window.open('customer/my_account.php', '_self'  )</script>";
                 echo "<script>window.open('index.php', '_self'  )</script>";
-            } 
-            else
-            {
+            } else {
 
                 $_SESSION['customer_email'] = $customer_email;
                 echo "<script>alert('Account has been created successfully!')</script>";
                 echo "<script>window.open('checkout.php', '_self')</script>";
-             }
+            }
 
 
             mysqli_close($con);
             exit();
-
         }
     }
+    header("Location:customer_register");
 }
 
 ?>

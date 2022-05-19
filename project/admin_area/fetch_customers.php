@@ -1,3 +1,13 @@
+<?php
+session_start();
+include "includes/db.php";
+if(!isset($_SESSION['admin_email']))
+{
+   echo "<script>window.open('admin_login.php','_self')</script>";
+}
+else{
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,3 +82,4 @@
 </body>
 
 </html>
+<?php }?>

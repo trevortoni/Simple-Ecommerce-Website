@@ -1,5 +1,11 @@
 <?php
+session_start();
 include "includes/db.php";
+if(!isset($_SESSION['admin_email']))
+{
+   echo "<script>window.open('admin_login.php','_self')</script>";
+}
+else{
 ?>
 
 <!DOCTYPE html>
@@ -9,8 +15,6 @@ include "includes/db.php";
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <script src="https://cdn.tiny.cloud/1/57qbakrv9hrnhfjzo4g06k09ggu3h0vyqyi95iepfxg7d2hb/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>tinymce.init({selector: 'textarea' });</script> -->
     <title>Insert Product</title>
 
     <style>
@@ -123,6 +127,7 @@ include "includes/db.php";
 </html>
 
 <?php
+}
 
 if(isset($_POST['insert_post']))
 {
@@ -148,7 +153,7 @@ if(isset($_POST['insert_post']))
     if($insert_pro)
     {
         echo"<script>alert('Product has been added successfully!')</script>";
-        echo"<script>window.open('insert_product.php','_self')</script>";
+        echo"<script>window.open('index.php','_self')</script>";
     }
 
 }

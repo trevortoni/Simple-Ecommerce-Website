@@ -1,5 +1,11 @@
 <?php
+session_start();
 include "includes/db.php";
+if(!isset($_SESSION['admin_email']))
+{
+   echo "<script>window.open('admin_login.php','_self')</script>";
+}
+else{
 
 if(isset($_GET['delete_product']))
 {
@@ -14,6 +20,8 @@ if(isset($_GET['delete_product']))
         echo "<script>alert('Product has been deleted successfully')</script>";
         echo "<script>window.open('index.php?view_products','_self')</script>";
     }
+}
+
 }
 
 ?> 
